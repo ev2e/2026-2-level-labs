@@ -15,6 +15,12 @@ ProfileType = tuple[str, FreqDictType, int]
 
 
 def tokenize(text: str) -> Sequence[str] | None:
+    punctuation = '?!.,'
+    text_lower = text.lower
+    for sym in punctuation:
+        text_lower = text.lower.replace(sym,'')
+    return text.lower.split()
+
     """
     Splits a text into tokens, converts the tokens into lowercase,
     removes punctuation and other symbols from words
@@ -29,6 +35,11 @@ def tokenize(text: str) -> Sequence[str] | None:
 
 
 def remove_stop_words(tokens: Sequence[str], stop_words: Sequence[str]) -> Sequence[str] | None:
+    for stop_word in stop_words:
+        while stop_word in tokens:
+            tokens.remove(stop_word)
+    return tokens
+
     """
     Removes stop words
 
@@ -42,6 +53,11 @@ def remove_stop_words(tokens: Sequence[str], stop_words: Sequence[str]) -> Seque
 
 
 def calculate_frequencies(tokens: Sequence[str]) -> dict[str, float] | None:
+    tokens = tokenize(text)
+    freq_dict = {}
+    for word in tokens:
+        freq_dict[word] = tokens.count[word] / len(tokens)
+    return freq_dict
     """
     Calculates frequencies of given tokens
 
