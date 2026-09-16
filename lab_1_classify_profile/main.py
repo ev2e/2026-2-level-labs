@@ -15,11 +15,13 @@ ProfileType = tuple[str, FreqDictType, int]
 
 
 def tokenize(text: str) -> Sequence[str] | None:
-    punctuation = '?!.,'
-    text_lower = text.lower
+    if not isinstance(text, str):
+        return None
+    punctuation = '?!.,/;:*()^-_%<>&@#'
+    text = text.lower()
     for sym in punctuation:
-        text_lower = text.lower.replace(sym,'')
-    return text.lower.split()
+        text = text.replace(sym,'')
+    return [token for token in text.split() if token]
 
     """
     Splits a text into tokens, converts the tokens into lowercase,
@@ -35,6 +37,14 @@ def tokenize(text: str) -> Sequence[str] | None:
 
 
 def remove_stop_words(tokens: Sequence[str], stop_words: Sequence[str]) -> Sequence[str] | None:
+    if not isinstance(stop_words, list) or not isinstance(tokens, list):
+        return None
+    for token in tokens:
+        if not isinstance(token, str):
+            return None
+    for word in stop_words:
+        if not isinstance(word, str):
+            return None
     for stop_word in stop_words:
         while stop_word in tokens:
             tokens.remove(stop_word)
@@ -53,10 +63,16 @@ def remove_stop_words(tokens: Sequence[str], stop_words: Sequence[str]) -> Seque
 
 
 def calculate_frequencies(tokens: Sequence[str]) -> dict[str, float] | None:
-    tokens = tokenize(text)
+    if not isinstance(tokens,(list,tuple)):
+        return None
+    for token in tokens:
+        if not isinstance(token, str):
+            return None
     freq_dict = {}
-    for word in tokens:
-        freq_dict[word] = tokens.count[word] / len(tokens)
+    for token in tokens:
+        freq_dict[token] =freq_dict.get(token,0) + 1
+    for token in freq_dict:
+        freq_dict[token] = freq_dict[token] / len(tokens)
     return freq_dict
     """
     Calculates frequencies of given tokens
@@ -70,6 +86,15 @@ def calculate_frequencies(tokens: Sequence[str]) -> dict[str, float] | None:
 
 
 def get_top_n_words(freq_dict: dict[str, float], top_n: int) -> Sequence[str] | None:
+    if not isinstance(freq_dict,dict) or not isinstance(top_n,int):
+        return None
+    if top_n <= 0:
+        return None
+
+    sort_tokens = sorted(freq_dict)
+    sort_tokens = sorted(sort_tokens, key = freq_dict.get, reverse = True)
+    return sort_tokens[:top_n]
+
     """
     Finds the most common words
 
