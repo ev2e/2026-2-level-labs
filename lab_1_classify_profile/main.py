@@ -41,12 +41,12 @@ def tokenize(text: str) -> Sequence[str] | None:
 def remove_stop_words(tokens: Sequence[str], stop_words: Sequence[str]) -> Sequence[str] | None:
     if not isinstance(stop_words, list) or not isinstance(tokens, list):
         return None
-    for token in tokens:
-        if not isinstance(token, str):
-            return None
-    for word in stop_words:
-        if not isinstance(word, str):
-            return None
+    if not all(isinstance(token, str) for token in tokens):
+        return None
+
+    if not all(isinstance(word, str) for word in stop_words):
+        return None
+
     for stop_word in stop_words:
         while stop_word in tokens:
             tokens.remove(stop_word)
@@ -65,16 +65,14 @@ def remove_stop_words(tokens: Sequence[str], stop_words: Sequence[str]) -> Seque
 
 
 def calculate_frequencies(tokens: Sequence[str]) -> dict[str, float] | None:
-    if not isinstance(tokens,(list,tuple)):
+    if not isinstance(tokens,list):
         return None
     for token in tokens:
         if not isinstance(token, str):
             return None
     freq_dict = {}
-    for token in tokens:
-        freq_dict[token] =freq_dict.get(token,0) + 1
-    for token in freq_dict:
-        freq_dict[token] = freq_dict[token] / len(tokens)
+    for token in set(tokens):
+        freq_dict[token] = tokens.count(token) / len(tokens)
     return freq_dict
     """
     Calculates frequencies of given tokens

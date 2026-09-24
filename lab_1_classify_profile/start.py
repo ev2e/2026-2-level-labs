@@ -4,7 +4,17 @@ Language detection starter.
 
 # pylint: disable=unused-variable, duplicate-code
 
-from main import tokenize, remove_stop_words, calculate_frequencies, get_top_n_words
+from main import  (
+    tokenize,
+    remove_stop_words,
+    calculate_frequencies,
+    get_top_n_words,
+    create_language_profile,
+    check_profile,
+    compare_profiles_by_top_n,
+    detect_language_by_top_n
+)
+
 
 def main() -> None:
     """
@@ -25,7 +35,14 @@ def main() -> None:
     result = get_top_n_words(freq_dict, 7)
     assert result, "Detection result is None"
 
+    en_profile = create_language_profile('en',en_text, stopwords)
+    de_profile = create_language_profile('de', de_text, stopwords)
+    unknown_profile = create_language_profile("unknown", unknown_text, stopwords)
 
+    language = detect_language_by_top_n(unknown_profile, en_profile, de_profile, 15)
+    print(language)
 
 if __name__ == "__main__":
     main()
+
+
