@@ -5,6 +5,7 @@ Language detection
 """
 
 # pylint:disable=unused-argument
+
 import string
 from typing import Sequence
 
