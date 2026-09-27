@@ -6,7 +6,6 @@ Language detection
 
 # pylint:disable=unused-argument
 
-import string
 from typing import Sequence
 
 FreqDictType = dict[str, float]
@@ -32,11 +31,14 @@ def tokenize(text: str) -> Sequence[str] | None:
 
     if not isinstance(text, str):
         return None
-    punctuation = string.punctuation
+
     text = text.lower()
-    for sym in punctuation:
-        text = text.replace(sym, '')
-    return [token for token in text.split() if token]
+
+    for sym in text:
+        if not sym.isalpha() and sym != " ":
+            text = text.replace(sym, "")
+
+    return text.split()
 
 
 def remove_stop_words(tokens: Sequence[str], stop_words: Sequence[str]) -> Sequence[str] | None:
@@ -82,7 +84,9 @@ def calculate_frequencies(tokens: Sequence[str]) -> dict[str, float] | None:
     for token in tokens:
         if not isinstance(token, str):
             return None
+
     freq_dict = {}
+
     for token in set(tokens):
         freq_dict[token] = tokens.count(token) / len(tokens)
     return freq_dict
@@ -163,9 +167,6 @@ def check_profile(profile: ProfileType) -> bool:
     """
     if not isinstance(profile, tuple) or len(profile) != 3:
         return False
-    if not isinstance(profile, tuple) or len(profile) != 3:
-        return False
-
 
     if not isinstance(profile[0], str):
         return False
@@ -173,6 +174,7 @@ def check_profile(profile: ProfileType) -> bool:
         return False
     if not isinstance(profile[2], int) :
         return False
+
     for key, value in profile[1].items():
         if not isinstance(key, str):
             return False
@@ -235,10 +237,13 @@ def detect_language_by_top_n(
     """
     if not check_profile(unknown_profile)  or not check_profile(profile_1) or not check_profile(profile_2) or not isinstance(top_n,int):
             return None
+
     sim1 = compare_profiles_by_top_n(unknown_profile, profile_1, top_n)
     sim2 = compare_profiles_by_top_n(unknown_profile, profile_2, top_n)
+
     if sim1 is None or sim2 is None:
         return None
+
     if sim1 > sim2:
         return profile_1[0]
     if sim2 > sim1:
