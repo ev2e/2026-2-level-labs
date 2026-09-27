@@ -28,20 +28,21 @@ def main() -> None:
     with open("lab_1_classify_profile/assets/texts/en.txt", "r", encoding="utf-8") as file:
         en_text = file.read()
 
+
     tokens = tokenize(de_text)
     cl_tokens = remove_stop_words(tokens, stopwords)
     freq_dict = calculate_frequencies(cl_tokens)
     result = get_top_n_words(freq_dict, 7)
-    assert result, "Detection result is None"
+    print(result)
+
 
     en_profile = create_language_profile('en',en_text, stopwords)
     de_profile = create_language_profile('de', de_text, stopwords)
     unknown_profile = create_language_profile("unknown", unknown_text, stopwords)
+    result = detect_language_by_top_n(unknown_profile, en_profile, de_profile, 15)
+    print(result)
 
-    language = detect_language_by_top_n(unknown_profile, en_profile, de_profile, 15)
-    print(language)
+    assert result, "Detection result is None"
 
 if __name__ == "__main__":
     main()
-
-
