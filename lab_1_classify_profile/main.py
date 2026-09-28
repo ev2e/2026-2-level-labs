@@ -181,7 +181,7 @@ def check_profile(profile: ProfileType) -> bool:
         if not isinstance(value, float):
             return False
 
-        return True
+    return True
 
 
 
