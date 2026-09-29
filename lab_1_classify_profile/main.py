@@ -17,7 +17,6 @@ ProfileType = tuple[str, FreqDictType, int]
 
 
 def tokenize(text: str) -> Sequence[str] | None:
-
     """
     Splits a text into tokens, converts the tokens into lowercase,
     removes punctuation and other symbols from words
@@ -38,20 +37,8 @@ def tokenize(text: str) -> Sequence[str] | None:
 
     return tokens
 
-    if not isinstance(text, str):
-        return None
-
-    text = text.lower()
-
-    for sym in text:
-        if not sym.isalpha() and sym != " ":
-            text = text.replace(sym, "")
-
-    return text.split()
-
 
 def remove_stop_words(tokens: Sequence[str], stop_words: Sequence[str]) -> Sequence[str] | None:
-
     """
     Removes stop words
 
@@ -76,21 +63,8 @@ def remove_stop_words(tokens: Sequence[str], stop_words: Sequence[str]) -> Seque
 
     return cleaned_text
 
-    if not isinstance(stop_words, list) or not isinstance(tokens, list):
-        return None
-    if not all(isinstance(token, str) for token in tokens):
-        return None
-
-    if not all(isinstance(word, str) for word in stop_words):
-        return None
-
-    for stop_word in stop_words:
-        while stop_word in tokens:
-            tokens.remove(stop_word)
-    return tokens
 
 def calculate_frequencies(tokens: Sequence[str]) -> dict[str, float] | None:
-
     """
     Calculates frequencies of given tokens
 
@@ -114,20 +88,8 @@ def calculate_frequencies(tokens: Sequence[str]) -> dict[str, float] | None:
 
     return frequency
 
-    if not isinstance(tokens,list):
-        return None
-    for token in tokens:
-        if not isinstance(token, str):
-            return None
-
-    freq_dict = {}
-
-    for token in set(tokens):
-        freq_dict[token] = tokens.count(token) / len(tokens)
-    return freq_dict
 
 def get_top_n_words(freq_dict: dict[str, float], top_n: int) -> Sequence[str] | None:
-
     """
     Finds the most common words
 
@@ -204,26 +166,6 @@ def create_language_profile(
 
     return language, freq_dict, n_words
 
-    tokens = tokenize(text)
-    cl_tokens = remove_stop_words(tokens, stop_words)
-    freq_dict = calculate_frequencies(cl_tokens)
-
-    if not isinstance(stop_words, list) or not isinstance(text, str) or not isinstance(language,str):
-        return None
-
-    for word in stop_words:
-        if not isinstance(word, str):
-            return None
-
-    if freq_dict is None:
-        return None
-
-    if cl_tokens is None:
-        return None
-
-    language_profile = (language, freq_dict, len(freq_dict))
-    return language_profile
-
 
 def check_profile(profile: ProfileType) -> bool:
     """
@@ -257,7 +199,6 @@ def check_profile(profile: ProfileType) -> bool:
 def compare_profiles_by_top_n(
     unknown_profile: ProfileType, profile_to_compare: ProfileType, top_n: int
 ) -> float | None:
-
     """
     Compares profiles and calculates the distance using top n words
 

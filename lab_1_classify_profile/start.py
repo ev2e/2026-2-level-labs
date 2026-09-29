@@ -17,21 +17,11 @@ from lab_1_classify_profile.main import (
     tokenize,
 )
 
-from main import (
-    calculate_frequencies,
-    create_language_profile,
-    detect_language_by_top_n,
-    get_top_n_words,
-    remove_stop_words,
-    tokenize,
-)
-
 
 def main() -> None:
     """
     Launches an implementation.
     """
-
     with open("lab_1_classify_profile/assets/texts/de.txt", "r", encoding="utf-8") as file:
         de_text = file.read()
     with open("lab_1_classify_profile/assets/texts/unknown.txt", "r", encoding="utf-8") as file:
@@ -90,6 +80,7 @@ def main() -> None:
 
     assert result, "Detection result is None"
     return None
+
 
 if __name__ == "__main__":
     main()
