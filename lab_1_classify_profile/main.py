@@ -81,9 +81,9 @@ def calculate_frequencies(tokens: Sequence[str]) -> dict[str, float] | None:
 
     if not isinstance(tokens,list):
         return None
-    for token in tokens:
-        if not isinstance(token, str):
-            return None
+    if not all(isinstance(token,str) for token in tokens):
+        return None
+
 
     freq_dict = {}
 
