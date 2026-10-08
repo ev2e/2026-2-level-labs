@@ -25,7 +25,11 @@ def prepare_word(
 
     In case of corrupt input arguments, None is returned
     """
-    if not isinstance(raw_word,str) or not isinstance(start_of_word,str | None) or not isinstance(end_of_word,str | None):
+    if(
+    not isinstance(raw_word, str)
+    or not isinstance(start_of_word, str | None)
+    or not isinstance(end_of_word, str | None)
+    ):
         return None
 
     tokens = []
@@ -61,8 +65,12 @@ def collect_frequencies(
     None is returned
     """
 
-    if not isinstance(text, str) or not isinstance(start_of_word, str | None) or not isinstance(end_of_word, str):
-            return None
+    if(
+    not isinstance(text,str)
+    or not isinstance(start_of_word, str | None)
+    or not isinstance(end_of_word, str)
+    ):
+        return None
 
     freq_dict = {}
 
