@@ -13,7 +13,6 @@ from typing import Sequence
 def prepare_word(
     raw_word: str, start_of_word: str | None, end_of_word: str | None
 ) -> tuple[str, ...] | None:
-
     """
     Tokenize a word into characters and attach optional boundary tokens.
 
@@ -50,7 +49,6 @@ def prepare_word(
 def collect_frequencies(
     text: str, start_of_word: str | None, end_of_word: str
 ) -> dict[tuple[str, ...], int] | None:
-
     """
     Count number of occurrences of each word.
 
@@ -84,23 +82,6 @@ def collect_frequencies(
         word_frequencies[prepared_word] = word_frequencies.get(prepared_word, 0) + 1
 
     return word_frequencies
-
-    if(
-    not isinstance(text,str)
-    or not isinstance(start_of_word, str | None)
-    or not isinstance(end_of_word, str)
-    ):
-        return None
-
-    freq_dict = {}
-
-    for raw_word in text.split():
-        prepared = prepare_word(raw_word, start_of_word, end_of_word)
-        if prepared is None:
-            return None
-        freq_dict[prepared] = freq_dict.get(prepared, 0) + 1
-
-    return freq_dict
 
 
 def count_tokens_pairs(
