@@ -22,8 +22,10 @@ def main() -> None:
 
 
     result = collect_frequencies(text, None, "/s")
-    print(result)
+    for w, c in result.items():
+        print(w,c)
     assert result, "Translation not working"
+
 
 
 if __name__ == "__main__":
