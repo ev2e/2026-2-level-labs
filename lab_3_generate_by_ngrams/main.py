@@ -180,6 +180,19 @@ class TextProcessor:
         In case any of methods used return None, None is returned.
         """
 
+        if not isinstance(encoded_corpus, tuple):
+            return None
+
+        if not all(isinstance(element, int) and not isinstance(element, bool) for element in encoded_corpus):
+            return None
+
+        decoded = self._decode(encoded_corpus)
+
+        if decoded is None:
+            return None
+
+        return self._postprocess_decoded_text(decoded)
+
 
 
     def fill_from_ngrams(self, content: dict) -> None:
@@ -189,6 +202,12 @@ class TextProcessor:
         Args:
             content (dict): ngrams from external JSON
         """
+
+
+
+
+
+
 
     def _decode(self, corpus: tuple[int, ...]) -> tuple[str, ...] | None:
         """
@@ -203,6 +222,26 @@ class TextProcessor:
         In case of corrupt input arguments, None is returned.
         In case any of methods used return None, None is returned.
         """
+
+        if not isinstance(corpus, tuple) or not corpus:
+            return None
+
+        if not all(isinstance(el, int) and not isinstance(el, bool) for el in corpus):
+            return None
+
+        decoded_text = []
+
+        for element in corpus:
+            token = self.get_token(element)
+
+            if token is None:
+                return None
+
+            decoded_text.append(token)
+
+        return tuple(decoded_text)
+
+
 
     def _postprocess_decoded_text(self, decoded_corpus: tuple[str, ...]) -> str | None:
         """
@@ -219,6 +258,26 @@ class TextProcessor:
 
         In case of corrupt input arguments, None is returned
         """
+
+        if(
+        not isinstance(decoded_corpus, tuple)
+        or not all(isinstance(token, str) for token in decoded_corpus)
+        ):
+            return None
+
+        text = ''.join(decoded_corpus)
+        text = text.replace(self._end_of_word_token, ' ')
+        text = ' '.join(text.split())
+
+        if not text:
+            return None
+
+        text = text[0].upper() + text[1:]
+
+        if text[-1] != '.':
+            text += '.'
+
+        return text
 
 
 class WordProcessor(TextProcessor):
