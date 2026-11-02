@@ -25,7 +25,6 @@ def prepare_word(
 
     In case of corrupt input arguments, None is returned
     """
-    ()
     if(
     not isinstance(raw_word, str)
     or not isinstance(start_of_word, str | None)
@@ -81,7 +80,7 @@ def collect_frequencies(
             return None
         freq_dict[prepared] = freq_dict.get(prepared, 0) + 1
 
-    return dict(sorted(freq_dict.items(), key=lambda x: x[1], reverse = True))
+    return freq_dict
 
 
 def count_tokens_pairs(
