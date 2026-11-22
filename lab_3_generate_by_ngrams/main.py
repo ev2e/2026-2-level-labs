@@ -45,20 +45,27 @@ class TextProcessor:
         In case any of methods used return None, None is returned.
         """
 
-        if not isinstance(text, str):
+        if not isinstance(text, str) or not text:
             return None
 
+        text = text.lower()
         tokens = []
+        words = text.split()
 
-        for char in text.lower():
-            if char.isalpha():
-                tokens.append(char)
-            else:
-                if tokens and tokens[-1] != self._end_of_word_token:
+        for i, word in enumerate(words):
+            processed_word = ''.join(char for char in word if char.isalpha())
+            if not processed_word:
+                continue
+
+            tokens.extend(processed_word)
+
+            if i < len(words) - 1 or text[-1].isspace() or not text[-1].isalnum():
+                if tokens[-1] != self._end_of_word_token:
                     tokens.append(self._end_of_word_token)
 
-            if not tokens:
-                return None
+        if not tokens:
+            return None
+
         return tuple(tokens)
 
     def get_id(self, element: str) -> int | None:
